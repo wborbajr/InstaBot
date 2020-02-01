@@ -1,6 +1,9 @@
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.keys import Keys
+
+from secrets import username, password
+
 import time
 import random
 import sys
@@ -88,9 +91,6 @@ class InstagramBot:
             unique_photos -= 1
 
 if __name__ == "__main__":
-
-    username = "email"
-    password = "password"
 
     ig = InstagramBot(username, password)
     ig.login()
