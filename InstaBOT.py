@@ -1,6 +1,7 @@
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options
 
 from secrets import username, password
 
@@ -19,9 +20,13 @@ def print_same_line(text):
 class InstagramBot:
 
     def __init__(self, username, password):
+        chrome_options = Options()
+        chrome_options.add_argument("—-incognito")
+        # browser = webdriver.Chrome(path, options=chrome_options)
+
         self.username = username
         self.password = password
-        self.driver = webdriver.Chrome(ChromeDriverManager().install())
+        self.driver = webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=chrome_options)
 
     def closeBrowser(self):
         self.driver.close()
@@ -29,6 +34,7 @@ class InstagramBot:
     def login(self):
         driver = self.driver
         driver.get("https://www.instagram.com/")
+        print(driver.title)
         time.sleep(2)
         login_button = driver.find_element_by_xpath("//a[@href='/accounts/login/?source=auth_switcher']")
         login_button.click()
@@ -55,7 +61,6 @@ class InstagramBot:
         for i in range(1, 7):
             try:
                 driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-                # time.sleep(2)
                 time.sleep(random.randint(4,12))
                 # get tags
                 hrefs_in_view = driver.find_elements_by_tag_name('a')
@@ -82,11 +87,9 @@ class InstagramBot:
                 for second in reversed(range(0, random.randint(18, 28))):
                     print_same_line("#" + hashtag + ': unique photos left: ' + str(unique_photos)
                                     + " | Sleeping " + str(second))
-                    # time.sleep(1)
                     time.sleep(random.randint(1,6))
             except Exception as e:
                 print("Error: " + e)
-                # time.sleep(2)
                 time.sleep(random.randint(2,8))
             unique_photos -= 1
 
@@ -95,8 +98,8 @@ if __name__ == "__main__":
     ig = InstagramBot(username, password)
     ig.login()
 
-    hashtags = ['followme', 'fashion', 'sun', 'scruffy', 'street', 'nikonphotography',
-                'beauty', 'studio', 'pretty', 'vintage', 'captureonepro',
+    hashtags = ['followme', 'nikon', 'sun', 'scruffy', 'street', 'nikonphotography',
+                'portrait', 'studio', 'pretty', 'vintage', 'captureonepro',
                 'nikon', 'curitibacool', 'belezanatural']
 
     while True:
